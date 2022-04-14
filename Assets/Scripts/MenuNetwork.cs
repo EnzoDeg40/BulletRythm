@@ -16,7 +16,7 @@ public class MenuNetwork : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(GetRequest("https://edstudio.fr/api/bulletrythm/playerslist.php"));
+        StartCoroutine(GetRequest(URL.url + "playerslist.php"));
     }
 
     // Update is called once per frame
