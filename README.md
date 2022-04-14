@@ -5,7 +5,7 @@
 Le jeu est toujours en cours de développement, nous somme ouvert pour toute contribution. Vous pouvez [tester le jeu depuis le PlayStore](https://play.google.com/store/apps/details?id=com.EdStudio.BulletRythm&gl=FR).
 
 ## Gameplay
-![Gameplay](readme/gameplay.gif)
+![Gameplay](https://github.com/EnzoDeg40/BulletRythm/blob/main/Readme/gameplay.gif)
 
 ## Installation et construction
 Vous devez installer [Unity](https://unity3d.com/fr/get-unity/download), le projet est actuellement sous la version 2020.3.21f1 mais sera mis à jour au fil du temps.
