@@ -35,14 +35,21 @@ public class MenuLogin : MonoBehaviour
     [Header("CGU")]
     public Button CGU;
 
+    [Header("Debug")]
+    public Text DebugMessage;
+
     // Start is called before the first frame update
     void Start()
     {
-        usernameLogin.text = PlayerPrefs.GetString("username", "");
-        passwordLogin.text = PlayerPrefs.GetString("password", "");
+        // Filed automatically login inputs if a PlayerPrefs exist
+        usernameLogin.text = PlayerPrefs.GetString("username");
+        passwordLogin.text = PlayerPrefs.GetString("password");
+        
+        // Clear the debug message
+        DebugMessage.text = "";
 
-        /*
-        if(usernameLogin.text != "" && passwordLogin.text != null)
+        // Try to login the user automatically
+        /*if(usernameLogin.text != "" && passwordLogin.text != null)
         {
             GoLogin();
         }
@@ -102,7 +109,8 @@ public class MenuLogin : MonoBehaviour
 
     IEnumerator GetRequestLogin(string url)
     {
-        //yield return new WaitForSeconds(2);
+        // Clear the debug message
+        DebugMessage.text = "";
 
         using (UnityWebRequest webRequest = UnityWebRequest.Get(url))
         {
@@ -112,29 +120,40 @@ public class MenuLogin : MonoBehaviour
             string[] pages = url.Split('/');
             int page = pages.Length - 1;
 
-            if (webRequest.isNetworkError)
+            switch (webRequest.result)
             {
-                Debug.Log(pages[page] + ": Error: " + webRequest.error);
-            }
-            else
-            {
-                Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+                case UnityWebRequest.Result.ConnectionError:
+                case UnityWebRequest.Result.DataProcessingError:
+                    Debug.LogError(pages[page] + ": Error: " + webRequest.error);
+                    break;
 
-                if(webRequest.downloadHandler.text == "true")
-                {
-                    PlayerPrefs.SetString("username", usernameLogin.text);
-                    PlayerPrefs.SetString("password", passwordLogin.text);
+                case UnityWebRequest.Result.ProtocolError:
+                    Debug.LogError(pages[page] + ": HTTP Error: " + webRequest.error);
+                    break;
 
-                    SceneManager.LoadScene("Menu");
-                } 
+                case UnityWebRequest.Result.Success:
+                    Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
+
+                    string webtext = webRequest.downloadHandler.text;
+
+                    if (webtext == "true") {
+                        PlayerPrefs.SetString("username", usernameLogin.text);
+                        PlayerPrefs.SetString("password", passwordLogin.text);
+
+                        SceneManager.LoadScene("Menu");
+                    }
+                    else if(webtext == "false") {
+                        DebugMessage.text = "Identifiants incorrects";
+                    }
+                    else {
+                        DebugMessage.text = webRequest.downloadHandler.text;
+                    }
+
+                    break;
             }
 
             loadingPanel.SetActive(false);
-
             
         }
     }
-
-    
-
 }
