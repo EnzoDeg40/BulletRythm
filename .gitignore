@@ -60,6 +60,8 @@ sysinfo.txt
 *.aab
 *.unitypackage
 *.app
+BuildAndroid
+BuildWindows
 
 # Crashlytics generated file
 crashlytics-build.properties
