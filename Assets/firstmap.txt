@@ -1,0 +1,13 @@
+[mapinfo]
+title:
+artiste:
+creator:
+difficulty : 2
+
+
+
+[beatmap]
+1000,0,1
+2000,0,4
+5000,1,2
+6000,2,3
