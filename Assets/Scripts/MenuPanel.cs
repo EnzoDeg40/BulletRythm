@@ -49,11 +49,8 @@ public class MenuPanel : MonoBehaviour
         mapselect.onClick.AddListener(() => changePanel("mapselect"));
         userinfo.onClick.AddListener(() => changePanel("userinfo"));
         scores.onClick.AddListener(() => changePanel("scores"));
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+        // Evite les problèmes au cas ou deux vues serait activés
+        changePanel("mapselect");
     }
 }

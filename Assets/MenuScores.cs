@@ -7,12 +7,13 @@ using SimpleJSON;
 
 public class MenuScores : MonoBehaviour
 {
-    public Text Scores;
+    public GameObject TableContent;
+    public GameObject ItemPlayerRanking;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Définit l'url requet
+        // Définit l'url de la requet
         string url = URL.url + "info.php?query=globalranking";
 
         StartCoroutine(GetRequest(url));
@@ -47,32 +48,37 @@ public class MenuScores : MonoBehaviour
                 case UnityWebRequest.Result.Success:
                     Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
 
+                    // Récupère le contenu de la page
                     string data = webRequest.downloadHandler.text;
 
-                    //var jsonData = JSON.Parse(data);
+                    // Initie l'index
+                    int index = 0;
 
-                    /*string resultdata = "";
-                    foreach (var item in jsonData){
-                        string currentdata = item[0].ToString(); 
-                    }*/
-
-                    string resultdata = ".\t\tUsername\t(Total scores)\n";
-                    int rank = 0;
-
+                    // Pour chaque element du JSON
                     JSONNode root = JSONNode.Parse(data);
                     foreach (JSONNode n in root)
                     {
-                        rank++;
+                        // Incrémente de 1 l'index
+                        index++;
+
+                        // Initie les variables
                         string username = n["username"];
                         int total_score = n["total_score"];
-                        resultdata += $"{rank} \t\t<b>{username}</b> \t({total_score})\n";
+
+                        // Créé un item puis le place dans le tableau
+                        GameObject child = GameObject.Instantiate(ItemPlayerRanking);
+                        child.transform.parent = TableContent.transform;
+
+                        // Modifie les paramètres de l'item
+                        child.transform.Find("RankingText").GetComponent<Text>().text = index.ToString();
+                        child.transform.Find("BackgroundItem").Find("UsernameText").GetComponent<Text>().text = username;
+                        child.transform.Find("BackgroundItem").Find("TotalScoreText").GetComponent<Text>().text = total_score.ToString("#,#").Replace(',', ' ');
+
+                        // Met en couleur le pseudo si c'est le joueur actuel
+                        if(n["username"].ToString().ToLower() == "\"" + PlayerPrefs.GetString("username").ToLower() + "\""){
+                            child.transform.Find("BackgroundItem").Find("UsernameText").GetComponent<Text>().color = Color.yellow; //new Color(255, 255, 88);
+                        }
                     }
-                    Scores.text = resultdata;
-
-
-                    // [2, { ""mapname":"Thaehan - Bwa ! (Deif)","username":"EnzoDeg40","dateofsubbmit":"2020-09-22","score":"5359050","combo":"458","hit":"541","miss":"2"}]
-                    //jsonData[0]
-                    //Result.text = jsonData[0];
 
                     break;
             }
