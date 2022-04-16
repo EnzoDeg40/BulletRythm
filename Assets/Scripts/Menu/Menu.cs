@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Net;
 using System.IO;
@@ -6,7 +7,6 @@ using System.IO.Compression;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
-using System;
 using UnityEngine.Networking;
 
 public class Menu : MonoBehaviour
@@ -34,6 +34,10 @@ public class Menu : MonoBehaviour
     public AudioSource playmusic;
     private AudioClip clipMusic;
     private string currentMusicPlayed;
+
+    [Header("UI")]
+    public GameObject PlayButton;
+    public GameObject PauseButton;
 
 
     void Start()
@@ -81,15 +85,21 @@ public class Menu : MonoBehaviour
             currentMusicPlayed = beatmapname;
             currentPlayed.text = beatmapname + " ♫";
         }
+
+        PlayButton.SetActive(false);
+        PauseButton.SetActive(true);
     }
 
-    public void MusicPause() {
-        if (playmusic.isPlaying) {
-            playmusic.Pause();
-        }
-        else {
-            playmusic.Play();
-        }
+    public void SetMusicPause() {
+        playmusic.Pause();
+        PlayButton.SetActive(true);
+        PauseButton.SetActive(false);
+    }
+
+    public void SetMusicPlay(){
+        playmusic.Play();
+        PlayButton.SetActive(false);
+        PauseButton.SetActive(true);
     }
 
     IEnumerator LoadFile(string fullpath)
