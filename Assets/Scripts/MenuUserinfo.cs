@@ -24,7 +24,7 @@ public class MenuUserinfo : MonoBehaviour
         // Affiche le pseudo 
         Username.text = username;
 
-        // Définit l'url requet
+        // Définit l'url requête
         string url = URL.url + "info.php?query=playerscore&username=" + username;
 
         // Récupère les informations du joueur

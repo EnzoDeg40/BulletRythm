@@ -13,7 +13,7 @@ public class MenuScores : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        // Définit l'url de la requet
+        // Définit l'url de la requête
         string url = URL.url + "info.php?query=globalranking";
 
         StartCoroutine(GetRequest(url));

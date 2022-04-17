@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 public class GameSystem : MonoBehaviour
 {
     public GameUI gameUI;
+    public GameRanking gameRanking;
 
     public int score;
     public int combo;
@@ -17,7 +18,10 @@ public class GameSystem : MonoBehaviour
 
     void Start()
     {
-        gameUI = GameObject.Find("GameSystem").GetComponent<GameUI>();
+        // Set other script
+        gameUI = this.GetComponent<GameUI>();
+        gameRanking = this.GetComponent<GameRanking>();
+
         life = 100;
     }
 
@@ -70,6 +74,7 @@ public class GameSystem : MonoBehaviour
         }
 
         gameUI.UpdateUI(score, combo, pourcent, life);
+        gameRanking.updateRanking(score);
     }
 
     public void gameEnd()

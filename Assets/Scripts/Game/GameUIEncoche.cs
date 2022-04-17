@@ -15,9 +15,9 @@ public class GameUIEncoche : MonoBehaviour
     {
         if (notch)
         {
-            BackgroundUp.gameObject.transform.position += new Vector3(0, -62.5f, 0);
-            Pseudo.transform.position += new Vector3(64, 0, 0);
-            Pourcent.transform.position += new Vector3(-64, 0, 0);
+            //BackgroundUp.gameObject.transform.position += new Vector3(0, -62.5f, 0);
+            //Pseudo.transform.position += new Vector3(64, 0, 0);
+            //Pourcent.transform.position += new Vector3(-64, 0, 0);
             //BackgroundUp.rectTransform.SetInsetAndSizeFromParentEdge(RectTransform.Edge.Top, -5, 0);
         }
     }

@@ -24,11 +24,15 @@ public class GameSpawnBullet : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
-        // To do : load beatmap
+        // To test the game without going through the menu
+        if(Menu.mapSelected == null){
+            Menu.mapSelected = "Thaehan - Bwa ! (Deif)";
+        }
+
+        // Load the beatmap
         beatmap = System.IO.File.ReadAllText(Application.persistentDataPath + "/Beatmaps/" + Menu.mapSelected + "/hard.brm").Split(';');
-
-
+        
+        // Set the time
         time = -3000;
         StartCoroutine(StartMusic());
     }
