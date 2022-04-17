@@ -117,11 +117,9 @@ public class GameRanking : MonoBehaviour
                         index++;
                     }
 
-                    // For each cont
-                    /*for (int i = 0; i < root.Count; i++)
-                    {
-                        Debug.Log(ranking[i, 1] + " --- " + ranking[i, 0]);
-                    }*/
+                    // To Do : affiche le ranking
+
+                    updateRanking(0);
 
                     break;
             }
