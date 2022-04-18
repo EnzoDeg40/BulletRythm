@@ -8,6 +8,7 @@ using SimpleJSON;
 public class GameRanking : MonoBehaviour
 {
     [Header("UI")]
+    public GameObject ScoreAbove;
     public Text rankNumber;
     public Text username;
     public Text score;
@@ -97,6 +98,12 @@ public class GameRanking : MonoBehaviour
 
                     // Récupère le contenu de la page
                     string data = webRequest.downloadHandler.text;
+
+                    // Si il n'y a aucun classment
+                    if(data == "null"){
+                        ScoreAbove.SetActive(false);
+                        break;
+                    }
 
                     // Initie l'index
                     int index = 0;

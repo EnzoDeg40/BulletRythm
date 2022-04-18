@@ -37,6 +37,7 @@ public class MenuLogin : MonoBehaviour
 
     [Header("Debug")]
     public Text DebugMessage;
+    public Text Version;
 
     // Start is called before the first frame update
     void Start()
@@ -48,12 +49,16 @@ public class MenuLogin : MonoBehaviour
         // Clear the debug message
         DebugMessage.text = "";
 
-        // Try to login the user automatically
-        /*if(usernameLogin.text != "" && passwordLogin.text != null)
-        {
-            GoLogin();
-        }
-        */
+        // Show the version of build
+        Version.text = "v" + Application.version;
+
+        #if !UNITY_EDITOR
+            // Try to login the user automatically
+            if(usernameLogin.text != "" && passwordLogin.text != null)
+            {
+                GoLogin();
+            }
+        #endif
 
         newPlayer.onClick.AddListener(() => changePanel(true));
         oldPlayer.onClick.AddListener(() => changePanel(false));

@@ -5,19 +5,33 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using SimpleJSON;
 
-public class MenuScores : MonoBehaviour
+
+public class MenuUserinfo : MonoBehaviour
 {
     public GameObject TableContent;
-    public GameObject ItemPlayerRanking;
+    public GameObject ItemPlayerInfo;
+    public Text Username;
+
+    //public Text Result;
 
     // Start is called before the first frame update
     void Start()
     {
-        // Définit l'url de la requête
-        string url = URL.url + "info.php?query=globalranking";
+        // Récupéré le nom d'utilisateur 
+        string username = PlayerPrefs.GetString("username");
+        if(username == ""){
+            Debug.LogWarning("Username is not set");
+            return;
+        }
 
+        // Affiche le pseudo 
+        Username.text = username;
+
+        // Définit l'url requête
+        string url = URL.url + "info.php?query=playerscore&username=" + username;
+
+        // Récupère les informations du joueur
         StartCoroutine(GetRequest(url));
-
     }
 
     // Update is called once per frame
@@ -48,7 +62,6 @@ public class MenuScores : MonoBehaviour
                 case UnityWebRequest.Result.Success:
                     Debug.Log(pages[page] + ":\nReceived: " + webRequest.downloadHandler.text);
 
-                    // Récupère le contenu de la page
                     string data = webRequest.downloadHandler.text;
 
                     // Initie l'index
@@ -56,29 +69,33 @@ public class MenuScores : MonoBehaviour
 
                     // Pour chaque element du JSON
                     JSONNode root = JSONNode.Parse(data);
-                    foreach (JSONNode n in root)
-                    {
+                    foreach (JSONNode n in root){
+
                         // Incrémente de 1 l'index
                         index++;
 
                         // Initie les variables
-                        string username = n["username"];
-                        int total_score = n["total_score"];
+                        string mapname = n["mapname"];
+                        int score = n["score"];
+                        int combo = n["combo"];
+                        int miss = n["miss"];
+                        string dateofsubbmit = n["dateofsubbmit"];
 
                         // Créé un item puis le place dans le tableau
-                        GameObject child = GameObject.Instantiate(ItemPlayerRanking);
+                        GameObject child = GameObject.Instantiate(ItemPlayerInfo);
                         child.transform.parent = TableContent.transform;
 
                         // Modifie les paramètres de l'item
-                        child.transform.Find("RankingText").GetComponent<Text>().text = index.ToString();
-                        child.transform.Find("BackgroundItem").Find("UsernameText").GetComponent<Text>().text = username;
-                        child.transform.Find("BackgroundItem").Find("TotalScoreText").GetComponent<Text>().text = total_score.ToString("#,#").Replace(',', ' ');
-
-                        // Met en couleur le pseudo si c'est le joueur actuel
-                        if(n["username"].ToString().ToLower() == "\"" + PlayerPrefs.GetString("username").ToLower() + "\""){
-                            child.transform.Find("BackgroundItem").Find("UsernameText").GetComponent<Text>().color = Color.yellow; //new Color(255, 255, 88);
-                        }
+                        child.transform.Find("MapName").GetComponent<Text>().text = mapname;
+                        child.transform.Find("Score").GetComponent<Text>().text = score.ToString("#,#").Replace(',', ' ');
+                        child.transform.Find("Date").GetComponent<Text>().text = dateofsubbmit;
+                        child.transform.Find("Detail").Find("Miss").Find("Text").GetComponent<Text>().text = miss.ToString();
+                        child.transform.Find("Detail").Find("Combo").Find("Text").GetComponent<Text>().text = combo.ToString();
                     }
+
+                    // [2, { ""mapname":"Thaehan - Bwa ! (Deif)","username":"EnzoDeg40","dateofsubbmit":"2020-09-22","score":"5359050","combo":"458","hit":"541","miss":"2"}]
+                    //jsonData[0]
+                    //Result.text = jsonData[0];
 
                     break;
             }

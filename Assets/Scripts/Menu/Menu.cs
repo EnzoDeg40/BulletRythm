@@ -135,13 +135,12 @@ public class Menu : MonoBehaviour
     {
         if (!downloadIsRunning)
         {
-            mapname = map;
-            //TryDownload();
-            StartCoroutine(BetterTryDownload());
+            mapname = map;;
+            StartCoroutine(TryDownload());
         }
     }
 
-    private IEnumerator BetterTryDownload() {
+    private IEnumerator TryDownload() {
         foreach (var item in menuBeatmapList.dir) {
             if (item == mapname) {
                 yield return 0;
@@ -169,36 +168,6 @@ public class Menu : MonoBehaviour
 
         //yield return new WaitForSeconds(1);
         //print("Coroutine ended: " + Time.time + " seconds");
-    }
-
-    void TryDownload()
-    {
-        foreach (var item in menuBeatmapList.dir)
-        {
-            if (item == mapname)
-            {
-                return;
-            }
-        }
-
-        Debug.Log("Download " + mapname);
-
-        // Create directory beatmaps if not exist
-        showinfo.text = "Create beatmap's directory";
-        Directory.CreateDirectory(beatmapFolder);
-
-        // Download beatmap
-        showinfo.text = "Download " + mapname;
-
-        downloadIsRunning = true;
-
-        WebClient client = new WebClient();
-        client.DownloadFileCompleted += new System.ComponentModel.AsyncCompletedEventHandler(DownloadComplet);
-        client.DownloadFileAsync(
-            // Url to download file
-            new Uri(URL.url + "download.php?user=" + PlayerPrefs.GetString("username") + "&password=" + PlayerPrefs.GetString("password") + "&map=" + mapname),
-            // Name of map download
-            beatmapFolder + mapname + ".zip");
     }
 
     void DownloadComplet(object sender, System.ComponentModel.AsyncCompletedEventArgs e)
